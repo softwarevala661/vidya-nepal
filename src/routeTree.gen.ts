@@ -15,6 +15,7 @@ import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TeachersRouteImport } from './routes/teachers'
+import { Route as TimetableRouteImport } from './routes/timetable'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const TeachersRoute = TeachersRouteImport.update({
   path: '/teachers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TimetableRoute = TimetableRouteImport.update({
+  id: '/timetable',
+  path: '/timetable',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/students': typeof StudentsRoute
   '/teachers': typeof TeachersRoute
+  '/timetable': typeof TimetableRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/students': typeof StudentsRoute
   '/teachers': typeof TeachersRoute
+  '/timetable': typeof TimetableRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +79,27 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/students': typeof StudentsRoute
   '/teachers': typeof TeachersRoute
+  '/timetable': typeof TimetableRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/academics' | '/admissions' | '/login' | '/students' | '/teachers'
+    | '/'
+    | '/academics'
+    | '/admissions'
+    | '/login'
+    | '/students'
+    | '/teachers'
+    | '/timetable'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/academics' | '/admissions' | '/login' | '/students' | '/teachers'
+  to:
+    | '/'
+    | '/academics'
+    | '/admissions'
+    | '/login'
+    | '/students'
+    | '/teachers'
+    | '/timetable'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/students'
     | '/teachers'
+    | '/timetable'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,6 +118,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   StudentsRoute: typeof StudentsRoute
   TeachersRoute: typeof TeachersRoute
+  TimetableRoute: typeof TimetableRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeachersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/timetable': {
+      id: '/timetable'
+      path: '/timetable'
+      fullPath: '/timetable'
+      preLoaderRoute: typeof TimetableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -151,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   StudentsRoute: StudentsRoute,
   TeachersRoute: TeachersRoute,
+  TimetableRoute: TimetableRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
