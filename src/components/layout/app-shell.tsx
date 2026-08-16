@@ -200,7 +200,7 @@ function UserMenu() {
           <Link to="/parent-portal">👨‍👩‍👧 {lang === "np" ? "अभिभावक पोर्टल" : "Parent portal"}</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild variant="destructive">
+        <DropdownMenuItem asChild className="text-destructive focus:text-destructive">
           <Link to="/login">
             <LogOut className="size-4" /> {lang === "np" ? "लगआउट" : "Sign out"}
           </Link>
