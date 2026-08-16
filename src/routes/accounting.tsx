@@ -52,11 +52,11 @@ function Page() {
                 <Card key={n.id} className="animate-rise gap-0 p-5 transition-all hover:-translate-y-1 hover:shadow-lift">
                   <div className="flex items-start justify-between gap-3">
                     <span className="grid size-10 place-items-center rounded-xl bg-accent text-lg">{n.emoji}</span>
-                    <StatusPill tone={n.tone}>{n.tag}</StatusPill>
+                    <StatusPill tone="blue">{n.audience}</StatusPill>
                   </div>
-                  <p className="np mt-3 text-sm font-semibold">{lang === "np" ? n.titleNp : n.title}</p>
-                  <p className="np mt-1 text-xs text-muted-foreground">{lang === "np" ? n.bodyNp : n.body}</p>
-                  <p className="mt-3 text-[11px] text-muted-foreground">🗓️ {n.dateBs} · {n.dateAd}</p>
+                  <p className="np mt-3 text-sm font-semibold">{lang === "np" ? n.title : n.titleEn}</p>
+                  <p className="np mt-1 text-xs text-muted-foreground">{n.body}</p>
+                  <p className="mt-3 text-[11px] text-muted-foreground">🗓️ {n.date} BS</p>
                 </Card>
               ))}
             </div>
