@@ -42,7 +42,7 @@ export function SectionCard({
   className,
 }: {
   title: string;
-  description?: string;
+  description?: string | undefined;
   action?: ReactNode;
   children: ReactNode;
   className?: string;
@@ -166,8 +166,8 @@ export function StatusPill({
   emoji,
   children,
 }: {
-  tone?: keyof typeof statusTones | string;
-  emoji?: string;
+  tone?: (keyof typeof statusTones | string) | undefined;
+  emoji?: string | undefined;
   children: ReactNode;
 }) {
   return (
