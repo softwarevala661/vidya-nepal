@@ -71,10 +71,10 @@ export function Counter({
   nepali = false,
 }: {
   value: number;
-  decimals?: number;
-  prefix?: string;
-  suffix?: string;
-  nepali?: boolean;
+  decimals?: number | undefined;
+  prefix?: string | undefined;
+  suffix?: string | undefined;
+  nepali?: boolean | undefined;
 }) {
   const [display, setDisplay] = useState(0);
   const raf = useRef<number | undefined>(undefined);
@@ -120,10 +120,10 @@ export function StatCard({
   emoji: string;
   label: string;
   value: number;
-  decimals?: number;
-  prefix?: string;
-  suffix?: string;
-  trend?: string;
+  decimals?: number | undefined;
+  prefix?: string | undefined;
+  suffix?: string | undefined;
+  trend?: string | undefined;
   tone?: "primary" | "success" | "info" | "warning" | "chart-5";
 }) {
   const toneRing: Record<string, string> = {
@@ -174,7 +174,7 @@ export function StatusPill({
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap",
-        statusTones[tone] ?? statusTones.grey,
+        statusTones[tone] ?? statusTones["grey"],
       )}
     >
       {emoji ? <span aria-hidden>{emoji}</span> : null}
@@ -320,7 +320,7 @@ export function ProgressBar({ value, tone = "primary" }: { value: number; tone?:
   return (
     <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
       <div
-        className={cn("h-full rounded-full transition-[width] duration-1000 ease-out", tones[tone] ?? tones.primary)}
+        className={cn("h-full rounded-full transition-[width] duration-1000 ease-out", tones[tone] ?? tones["primary"])}
         style={{ width: `${Math.min(100, value)}%` }}
       />
     </div>
