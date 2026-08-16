@@ -104,7 +104,7 @@ export function bsToAd(bs: BsDate): Date {
 const NP_DIGITS = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"];
 
 export function toNepaliDigits(value: number | string): string {
-  return String(value).replace(/\d/g, (d) => NP_DIGITS[Number(d)]);
+  return String(value).replace(/\d/g, (d) => NP_DIGITS[Number(d)] ?? d);
 }
 
 export function formatBs(bs: BsDate, lang: "np" | "en" = "np"): string {
