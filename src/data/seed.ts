@@ -38,7 +38,9 @@ export type Student = {
 
 const avatarFor = (seed: string) => `https://api.dicebear.com/7.x/notionists/svg?seed=${encodeURIComponent(seed)}&backgroundColor=ffd5a6,c0e6d9,d9d5f5`;
 
-const rawStudents: Array<[string, string, string, string, number, "Male" | "Female", string, string, number, number, number, string, string]> = [
+const rawStudents: Array<
+  [string, string, string, string, string, number, "Male" | "Female", string, string, number, number, number, string, string]
+> = [
   ["STU-2083-0412", "Aarav Sharma", "आरव शर्मा", "8", "A", 12, "Male", "Rajendra Sharma", "9846012345", 96, 3.72, 0, "Annapurna", "Lakeside-6, Pokhara"],
   ["STU-2083-0413", "Sneha Gurung", "स्नेहा गुरुङ", "8", "A", 13, "Female", "Kamala Gurung", "9856023411", 98, 3.9, 0, "Machhapuchhre", "Bagar-2, Pokhara"],
   ["STU-2083-0414", "Bibek Thapa", "विवेक थापा", "8", "B", 4, "Male", "Hari Thapa", "9806112233", 88, 3.25, 4500, "Dhaulagiri", "Bindhyabasini-1, Pokhara"],
