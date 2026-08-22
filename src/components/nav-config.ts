@@ -60,6 +60,7 @@ export const navGroups: NavGroup[] = [
   {
     key: "group.system",
     items: [
+      { to: "/school-profile", key: "nav.schoolProfile", emoji: "🏫" },
       { to: "/notifications", key: "nav.notifications", emoji: "🔔" },
       { to: "/settings", key: "nav.settings", emoji: "⚙️" },
     ],
