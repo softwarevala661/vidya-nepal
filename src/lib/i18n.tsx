@@ -32,6 +32,8 @@ export const dict: Dict = {
   "nav.teacherPortal": { np: "शिक्षक पोर्टल", en: "Teacher Portal" },
   "nav.studentPortal": { np: "विद्यार्थी पोर्टल", en: "Student Portal" },
   "nav.parentPortal": { np: "अभिभावक पोर्टल", en: "Parent Portal" },
+  "nav.schoolProfile": { np: "विद्यालय प्रोफाइल", en: "School Profile" },
+  "role.switch": { np: "भूमिका परिवर्तन", en: "Switch role" },
   "nav.notifications": { np: "सूचना", en: "Notifications" },
   "group.overview": { np: "सिंहावलोकन", en: "Overview" },
   "group.people": { np: "मानिसहरू", en: "People" },

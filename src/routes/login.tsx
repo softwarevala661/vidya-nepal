@@ -86,11 +86,18 @@ const slides = [
 ];
 
 const roleIcons: Record<Role, typeof User> = {
-  admin: Landmark,
+  principal: Landmark,
+  admin: ShieldCheck,
   teacher: Users,
   student: BookOpen,
-  parent: ShieldCheck,
+  parent: User,
+  accountant: Landmark,
+  hr: Users,
+  librarian: BookOpen,
+  transport: Bus,
+  hostel: User,
 };
+
 
 function LoginPage() {
   const { t, lang, setLang } = useI18n();
