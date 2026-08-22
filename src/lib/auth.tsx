@@ -1,6 +1,16 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-export type Role = "admin" | "teacher" | "student" | "parent";
+export type Role =
+  | "principal"
+  | "admin"
+  | "teacher"
+  | "student"
+  | "parent"
+  | "accountant"
+  | "hr"
+  | "librarian"
+  | "transport"
+  | "hostel";
 
 export type DemoAccount = {
   role: Role;
@@ -16,20 +26,36 @@ export type DemoAccount = {
   avatar: string;
 };
 
+const av = (seed: string, bg: string) =>
+  `https://api.dicebear.com/7.x/notionists/svg?seed=${seed}&backgroundColor=${bg}`;
+
 /** Presentation-only demo credentials. No backend, no network calls. */
 export const demoAccounts: DemoAccount[] = [
   {
-    role: "admin",
+    role: "principal",
     emoji: "🏫",
-    labelNp: "प्रशासक",
-    labelEn: "Admin",
-    username: "admin",
-    password: "admin123",
+    labelNp: "प्रधानाध्यापक",
+    labelEn: "Principal",
+    username: "principal",
+    password: "principal123",
     name: "Dr. Bishnu Prasad Sharma",
     nameNp: "डा. विष्णुप्रसाद शर्मा",
     subtitle: "Principal · Shree Himalaya Adarsha",
     home: "/",
-    avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Bishnu&backgroundColor=ffd5a6",
+    avatar: av("Bishnu", "ffd5a6"),
+  },
+  {
+    role: "admin",
+    emoji: "🛡️",
+    labelNp: "प्रशासक",
+    labelEn: "School Admin",
+    username: "admin",
+    password: "admin123",
+    name: "Kabita Gurung",
+    nameNp: "कविता गुरुङ",
+    subtitle: "School administrator · Office",
+    home: "/",
+    avatar: av("Kabita", "c0e6d9"),
   },
   {
     role: "teacher",
@@ -42,7 +68,7 @@ export const demoAccounts: DemoAccount[] = [
     nameNp: "सरिता अधिकारी",
     subtitle: "Mathematics · Grade 8–10",
     home: "/teacher-portal",
-    avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Sarita&backgroundColor=c0e6d9",
+    avatar: av("Sarita", "c0e6d9"),
   },
   {
     role: "student",
@@ -55,7 +81,7 @@ export const demoAccounts: DemoAccount[] = [
     nameNp: "आरव शर्मा",
     subtitle: "Grade 8 · Section A · Roll 12",
     home: "/student-portal",
-    avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Aarav&backgroundColor=d9d5f5",
+    avatar: av("Aarav", "d9d5f5"),
   },
   {
     role: "parent",
@@ -68,14 +94,83 @@ export const demoAccounts: DemoAccount[] = [
     nameNp: "राजेन्द्र शर्मा",
     subtitle: "Guardian of Aarav Sharma",
     home: "/parent-portal",
-    avatar: "https://api.dicebear.com/7.x/notionists/svg?seed=Rajendra&backgroundColor=ffd5a6",
+    avatar: av("Rajendra", "ffd5a6"),
+  },
+  {
+    role: "accountant",
+    emoji: "💳",
+    labelNp: "लेखापाल",
+    labelEn: "Accountant",
+    username: "accountant",
+    password: "accounts123",
+    name: "Nirmala Thapa",
+    nameNp: "निर्मला थापा",
+    subtitle: "Finance office · Fees & ledger",
+    home: "/fees",
+    avatar: av("Nirmala", "ffd5a6"),
+  },
+  {
+    role: "hr",
+    emoji: "👥",
+    labelNp: "मानव संसाधन",
+    labelEn: "HR / Staff",
+    username: "hr",
+    password: "hr123",
+    name: "Prakash Karki",
+    nameNp: "प्रकाश कार्की",
+    subtitle: "Human resources · Payroll",
+    home: "/hr",
+    avatar: av("Prakash", "c0e6d9"),
+  },
+  {
+    role: "librarian",
+    emoji: "📖",
+    labelNp: "पुस्तकालय",
+    labelEn: "Librarian",
+    username: "librarian",
+    password: "library123",
+    name: "Sunita Rai",
+    nameNp: "सुनिता राई",
+    subtitle: "Library desk · Issue & returns",
+    home: "/library",
+    avatar: av("Sunita", "d9d5f5"),
+  },
+  {
+    role: "transport",
+    emoji: "🚌",
+    labelNp: "यातायात",
+    labelEn: "Transport Manager",
+    username: "transport",
+    password: "transport123",
+    name: "Dipak Bhandari",
+    nameNp: "दीपक भण्डारी",
+    subtitle: "Routes · Buses · Drivers",
+    home: "/transport",
+    avatar: av("Dipak", "ffd5a6"),
+  },
+  {
+    role: "hostel",
+    emoji: "🏠",
+    labelNp: "छात्रावास",
+    labelEn: "Hostel Manager",
+    username: "hostel",
+    password: "hostel123",
+    name: "Maya Tamang",
+    nameNp: "माया तामाङ",
+    subtitle: "Hostel wardens · Rooms & beds",
+    home: "/hostel",
+    avatar: av("Maya", "c0e6d9"),
   },
 ];
+
+export const accountFor = (role: Role): DemoAccount =>
+  demoAccounts.find((a) => a.role === role) ?? demoAccounts[0]!;
 
 const STORAGE_KEY = "vidya-erp-session";
 
 type Ctx = {
   user: DemoAccount | null;
+  role: Role;
   ready: boolean;
   signIn: (username: string, password: string) => { ok: boolean; account?: DemoAccount; error?: string };
   signInAs: (role: Role) => DemoAccount;
@@ -84,6 +179,7 @@ type Ctx = {
 
 const AuthContext = createContext<Ctx>({
   user: null,
+  role: "principal",
   ready: false,
   signIn: () => ({ ok: false }),
   signInAs: () => demoAccounts[0]!,
@@ -97,8 +193,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      const role = raw as Role | null;
-      const found = demoAccounts.find((a) => a.role === role) ?? null;
+      const found = demoAccounts.find((a) => a.role === (raw as Role)) ?? null;
       setUser(found);
     } catch {
       setUser(null);
@@ -132,7 +227,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInAs = useCallback<Ctx["signInAs"]>(
     (role) => {
-      const account = demoAccounts.find((a) => a.role === role) ?? demoAccounts[0]!;
+      const account = accountFor(role);
       setUser(account);
       persist(account);
       return account;
@@ -145,7 +240,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     persist(null);
   }, [persist]);
 
-  const value = useMemo(() => ({ user, ready, signIn, signInAs, signOut }), [user, ready, signIn, signInAs, signOut]);
+  const value = useMemo(
+    () => ({ user, role: user?.role ?? "principal", ready, signIn, signInAs, signOut }),
+    [user, ready, signIn, signInAs, signOut],
+  );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
