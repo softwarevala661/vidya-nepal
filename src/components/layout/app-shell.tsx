@@ -15,7 +15,9 @@ import {
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
-import { bottomNav, navGroups } from "@/components/nav-config";
+import { bottomNavFor, navGroupsFor } from "@/components/nav-config";
+import { demoAccounts, useAuth, type Role } from "@/lib/auth";
+import { SchoolScene, phaseFor, phaseMeta } from "@/components/illustrations";
 import { school, notifications } from "@/data/seed";
 import { DateStamp } from "@/components/ui-kit";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -54,11 +56,13 @@ function Brand({ collapsed }: { collapsed: boolean }) {
 
 function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (() => void) | undefined }) {
   const { t } = useI18n();
+  const { role } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const groups = navGroupsFor(role);
 
   return (
     <nav className="space-y-5 px-3 pb-6">
-      {navGroups.map((group) => (
+      {groups.map((group) => (
         <div key={group.key}>
           {!collapsed && (
             <p className="px-3 pb-2 text-[10px] font-bold tracking-[0.14em] text-sidebar-foreground/45 uppercase">
@@ -78,11 +82,19 @@ function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (
                       "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                       collapsed && "justify-center px-0",
                       active
-                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-glow"
-                        : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-glow ring-1 ring-white/20"
+                        : "text-sidebar-foreground/75 hover:translate-x-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                     )}
                   >
-                    <span className="text-base transition-transform duration-200 group-hover:scale-110">
+                    {active && !collapsed ? (
+                      <span className="animate-pop absolute top-1/2 -left-1 h-6 w-1 -translate-y-1/2 rounded-full bg-warning" />
+                    ) : null}
+                    <span
+                      className={cn(
+                        "grid size-7 shrink-0 place-items-center rounded-lg text-base transition-all duration-200 group-hover:scale-110",
+                        active ? "bg-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]" : "bg-sidebar-accent/40",
+                      )}
+                    >
                       {item.emoji}
                     </span>
                     {!collapsed && <span className="truncate">{t(item.key)}</span>}
@@ -229,6 +241,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t, lang } = useI18n();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { role } = useAuth();
+  const mobileNav = bottomNavFor(role);
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -295,7 +309,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
 
             <div className="flex flex-1 items-center justify-end gap-2 md:flex-none">
+              <HeaderScene />
               <DateStamp className="hidden xl:flex" />
+              <RoleSwitcher />
               <LanguageSwitcher />
               <ThemeToggle />
               <NotificationBell />
@@ -315,7 +331,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Mobile bottom navigation */}
         <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur-xl lg:hidden">
           <ul className="grid grid-cols-5">
-            {bottomNav.map((item) => {
+            {mobileNav.map((item) => {
               const active = pathname === item.to;
               return (
                 <li key={item.to}>
